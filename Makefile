@@ -1,0 +1,67 @@
+.ONESHELL:
+
+# Variables
+VENV := venv
+
+include .env
+
+
+all: Run_all_containers
+
+install: $(VENV)/Scripts/activate
+
+$(VENV)/Scripts/activate: requirements.txt
+	python -m venv $(VENV)
+
+ifeq ($(OS),Windows_NT)
+	$(VENV)\Scripts\activate.ps1
+	$(VENV)\Scripts\python -m pip install --upgrade pip
+	$(VENV)\Scripts\pip install -r requirements.txt
+else
+	chmod +x $(VENV)/bin/activate
+	$(VENV)/bin/activate
+	$(VENV)/bin/python -m pip install --upgrade pip
+	$(VENV)/bin/pip install -r requirements.txt
+endif
+
+Run_all_containers:
+	docker-compose up -d
+
+Start_DB:
+	docker-compose up $(POSTGRES_HOST) -d
+
+run-migrations:
+	docker-compose up $(MIGRATION_SERVICE) -d	
+
+build-api:
+	docker build -t $(IMAGE_NAME) .
+
+run-api:
+	docker run -d \
+		--name $(CONTAINER_NAME) \
+		--network $(DOCKER_NETWORK) \
+		-p $(APP_PORT):$(APP_PORT) \
+		$(IMAGE_NAME):$(IMAGE_VERSION)
+
+delete_container:
+	docker-compose down
+
+
+# Define a clean step
+clean:
+ifeq ($(OS),Windows_NT)
+	@powershell -Command "Get-ChildItem -Recurse -Directory -Filter '__pycache__' | Remove-Item -Recurse -Force"
+	@powershell -Command "Get-ChildItem -Recurse -Directory -Filter 'data' | Remove-Item -Recurse -Force"
+else
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	find . -type d -name "data" -exec rm -rf {} +
+endif
+
+test:
+ifeq ($(OS),Windows_NT)
+	python ./test/test.py
+else
+	python ./test/test.py
+endif
+
+.PHONY: all test clean Code_linting Run_all_containers Start_DB delete_container run-migrations Build-api docker_build-api docker_run-api
