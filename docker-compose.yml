@@ -9,7 +9,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ${IMAGE_NAME}:${IMAGE_VERSION}
+    image: restapi:v1.0.0
     depends_on:
       DB:
         condition: service_healthy
@@ -29,7 +29,7 @@ services:
       - dem
 
   DB:
-    image: postgres:latest
+    image: postgres:17.3
     restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -52,7 +52,7 @@ services:
     build: 
       context: ./DB/Schemas/
       dockerfile: Dockerfile
-    image: migration:${IMAGE_VERSION}
+    image: migration:v1.0.0
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -65,11 +65,3 @@ services:
         restart: true
     networks:
       - dem
-
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - dem

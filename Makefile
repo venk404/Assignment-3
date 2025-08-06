@@ -1,9 +1,14 @@
-.ONESHELL:
+.ONESHELL: 
 
 # Variables
 VENV := venv
 
 include .env
+
+IMAGE_NAME=venkateshtangaraj/restapi
+IMAGE_VERSION=v1.0.0
+DOCKER_NETWORK=dem
+MIGRATION_SERVICE=migration
 
 # SQL query to check for the schema_migrations table
 CHECK_MIGRATIONS_QUERY := "SELECT CASE WHEN EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'students') THEN 'Schema exists' ELSE 'Schema does not exist' END AS schema_status;"

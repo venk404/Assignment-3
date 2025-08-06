@@ -74,14 +74,19 @@ Setup\setup.sh
 8) For Deleting all the running container
 
 ```bash
-  make delete_container
+  make down
 ```
 
-
-## To run Test
+9) Check if DB is running 
 ```bash
-  make test
+`make check-db
 ```
+
+10) Check if Schema created or not
+```bash
+  make check-migrations
+```
+
 
 ## Documentation(API Documentation)
 

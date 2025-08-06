@@ -6,7 +6,3 @@ POSTGRES_HOST=
 POSTGRES_PORT=
 #Network is specfied in docker-compose file
 APP_PORT=8002
-IMAGE_NAME=venkateshtangaraj/restapi
-IMAGE_VERSION=v1.0.0
-DOCKER_NETWORK=dem
-MIGRATION_SERVICE=migration
