@@ -30,7 +30,7 @@ Setup\setup.sh
 1) Clone the repository:
 
 ```bash
-  git clone https://github.com/venk404/SRE--RestAPI.git
+  git clone https://github.com/venk404/Assignment-3.git
 ```
 2) Change the directory.
 
