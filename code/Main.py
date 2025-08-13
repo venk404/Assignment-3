@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi import APIRouter, Request, Response
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
-from Models import insertstudent, get_all_students
-from Models import get_student_by_Id, Update_student, delete_student
+from db_students import insertstudent, get_all_students
+from db_students import get_student_by_Id, Update_student, delete_student
 import uvicorn
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
@@ -41,16 +41,6 @@ logger = logger.patch(patching)
 logger.add(sys.stderr, format="{extra[serialized]}", backtrace=True)
 
 load_dotenv()
-db_name = os.getenv('POSTGRES_DB')
-db_user = os.getenv('POSTGRES_USER')
-db_password = os.getenv('POSTGRES_PASSWORD')
-db_host = os.getenv('POSTGRES_HOST')
-db_port = os.getenv('POSTGRES_PORT')
-
-if not all([db_name, db_user, db_password, db_host, db_port]):
-    logger.error("""One or more required
-                    environment variables are not set or empty.""")
-    exit(1)
 
 # Prometheus metrics
 REQUEST_COUNT = Counter(
@@ -84,8 +74,8 @@ class Student(BaseModel):
             'examples': [
                 {
                     "name": "Ganesh Gaitonde",
-                    "email": "Gopalmate@gmail.com",
-                    "age": 22,
+                    "email": "Gopalmat@gmail.com",
+                    "age": 11,
                     "phone": "1234567890"
                 }
             ]
